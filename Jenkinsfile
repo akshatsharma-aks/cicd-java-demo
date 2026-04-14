@@ -8,47 +8,34 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/akshatsharma-aks/cicd-java-demo.git'
-            }
-        }
-
         stage('Build JAR') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${IMAGE_NAME}:latest")
-                }
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Stop Old Container') {
             steps {
-                sh "docker stop ${CONTAINER_NAME} || true"
-                sh "docker rm ${CONTAINER_NAME} || true"
+                bat 'docker stop %CONTAINER_NAME% || exit 0'
+                bat 'docker rm %CONTAINER_NAME% || exit 0'
             }
         }
 
         stage('Deploy Container') {
             steps {
-                sh """
-                docker run -d \
-                --name ${CONTAINER_NAME} \
-                -p 8080:8080 \
-                ${IMAGE_NAME}:latest
-                """
+                bat 'docker run -d -p 8081:8081 --name %CONTAINER_NAME% %IMAGE_NAME%'
             }
         }
 
         stage('Test App') {
             steps {
-                sh "curl http://localhost:8080 || true"
+                bat 'curl http://localhost:8081'
             }
         }
     }
