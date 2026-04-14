@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/your-username/cicd-java-demo.git'
+                git 'https://github.com/akshatsharma-aks/cicd-java-demo.git'
             }
         }
 
