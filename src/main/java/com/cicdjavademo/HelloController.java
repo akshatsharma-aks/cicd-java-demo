@@ -9,6 +9,6 @@ public class HelloController {
     @GetMapping("/")
     public String home() {
 //        return "CI/CD Pipeline Working Successfully!";
-        return "Webhook Working!";
+        return "Webhook Working!, Auto Build Working!";
     }
 }
